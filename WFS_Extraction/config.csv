@@ -1,0 +1,3 @@
+Output file name,WFS URL,WFS username,WFS password,WFS layer name,SQL filter clause,SQL filter field,SQL operator,SQL attribute,BBOX minX,BBOX minY,BBOX maxX,BBOX maxY,Output file path,DB server name,DB name,DB username,DB password
+LGA_Boundaries,https://services.slip.wa.gov.au/public/services/SLIP_Public_Services/Boundaries_WFS/MapServer/WFSServer,admin,password123,SLIP_Public_Services_Boundaries_WFS:Local_Government_Authority__LGA__Boundaries__LGATE-233_,WHERE,name,LIKE,%PERTH%,12892021.03,-3762885.456,12900715.48,-3755623.733,C:\WFS_Extraction\data\output\,MyServer\SQL,Spatial,admin,password123
+DELETE AFTER READING -- Create more WFS requests here…. (use the example data provided above to help Create further request entries),,,,,,,,,,,,,,,,,
