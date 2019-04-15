@@ -21,6 +21,8 @@ GDAL WFS Extraction Tool
     Requirements:
         * GDAL 2.4.x
         * Python 3.x (OSGEO4W packaged interpreter recommended for use)
+		* tqdm (pip install tqdm) - only necessary if progress bars are 
+		  desired, otherwise remove references to this library
 
     Contact:
         * Kieran Togher
@@ -35,10 +37,9 @@ GDAL WFS Extraction Tool
 import sys, os, csv, threading
 from osgeo import ogr, gdal
 from xml.etree import ElementTree
-
+from tqdm import tqdm
 
 def gdal_error_handler(err_class, err_num, err_msg): #Function initialises GDAL error handler
-
     errtype = {
             gdal.CE_None: 'None',
             gdal.CE_Debug: 'Debug',
@@ -78,13 +79,11 @@ class ConfigSheet(object): #Only one class used due to all config info being sto
 
 
 def main():
-
-    ''' #Remove block comments to print quantity of items to be downloaded
     pre_count = GetConfig()
     row_count = sum(1 for items in pre_count)
     show_count = str(row_count)
     print(show_count + ' items queued for download')
-    '''
+    
     #Reads data in config csv
     config_file = GetConfig()
 
@@ -101,7 +100,6 @@ def main():
 
 
 def Generate(ConfigName, ConfigURL, ConfigWFS_UID, ConfigWFS_Pass, ConfigLayer, ConfigClause, ConfigField, ConfigOperator, ConfigAttribute, ConfigMinX, ConfigMinY, ConfigMaxX, ConfigMaxY, ConfigPath, ConfigServer, ConfigDB, ConfigDB_UID, ConfigDB_Pass): #Function makes request to WFS server, retrieves data, filters data, writes data (for each dataset)
-
     #Set the driver
     wfs_drv = ogr.GetDriverByName('WFS')
 
@@ -151,7 +149,7 @@ def Generate(ConfigName, ConfigURL, ConfigWFS_UID, ConfigWFS_Pass, ConfigLayer, 
         else:
             pass
 
-    #print('\n''Now downloading ' + ConfigLayer + '...''\n')
+    print('\n''Now downloading ' + ConfigLayer + '...')
 
     #Create projection (.prj) file
     spatialref = foundLayer.GetSpatialRef()
@@ -220,7 +218,8 @@ def Generate(ConfigName, ConfigURL, ConfigWFS_UID, ConfigWFS_Pass, ConfigLayer, 
         outLayerDefn = outLayer.GetLayerDefn()
 
         # Add features to the output Layer
-        for inFeature in inLayer:
+        print('\n''Features are being processed...')
+        for inFeature in tqdm(inLayer):
 
             # Create output Feature
             outFeature = ogr.Feature(outLayerDefn)
@@ -249,7 +248,6 @@ def Generate(ConfigName, ConfigURL, ConfigWFS_UID, ConfigWFS_Pass, ConfigLayer, 
 
 
 def GetConfig(): #Opens and reads config file
-
     try:
         config_location = str('C:/WFS_Extraction/config.csv') #Change as needed
         open_config = open(config_location, 'r')
