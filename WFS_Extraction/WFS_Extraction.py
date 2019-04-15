@@ -21,8 +21,8 @@ GDAL WFS Extraction Tool
     Requirements:
         * GDAL 2.4.x
         * Python 3.x (OSGEO4W packaged interpreter recommended for use)
-		* tqdm (pip install tqdm) - only necessary if progress bars are 
-		  desired, otherwise remove references to this library
+	* tqdm (pip install tqdm) - only necessary if progress bars are 
+	  desired, otherwise remove references to this library
 
     Contact:
         * Kieran Togher
